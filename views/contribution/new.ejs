@@ -2,11 +2,14 @@
 
 <div class="container">
     <div class="row">
-        <h1 style="text-align: center;">Add New Comment to <%= grandplan.name %></h1>
+        <h1 style="text-align: center;">Make Your Contribution to <%= grandplan.name %></h1>
         <div style=" width: 30%; margin: 35px auto;">
-            <form action="/grandplans/<%= grandplan._id %>/comments" method="POST">
+            <form action="/grandplans/<%= grandplan._id %>/contribution" method="POST">
                 <div class="form-group">
-                    <input class="form-control" type="text" name="comment[text]" placeholder="text">
+                    <input class="form-control" type="text" name="contribution[role]" placeholder="role">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="contribution[message]" placeholder="how you want to help">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-primary btn-block">Submit!</button>

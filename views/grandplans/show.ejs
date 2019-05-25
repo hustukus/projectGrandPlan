@@ -1,0 +1,92 @@
+<% include ../partials/header %>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header text-center">
+                <h1><%=grandplan.name%></h1>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-3">
+            <h4 class="lead">Contributors:</h4>
+            <div class="thumbnail contributionThumbnail">
+                
+            <!--showing the current contributions-->
+                <% grandplan.contributions.forEach(function(contribution){ %>
+                    <div class="panel panel-contributions">
+                        <div class="panel-heading contibutionThumbnail"><%= contribution.author.username %></div>
+                        <div class="panel-body contibutionThumbnail">
+                            <span class="textCapit">Role: <%= contribution.role %></span>
+                            <p><i>" <%= contribution.message %> "</i></p>
+                        </div>
+                        <!--delete and edit buttons-->
+                        <% if(currentUser && contribution.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
+                                <a class="btn btn-xs btn-warning" href="/grandplans/<%=grandplan._id%>/contribution/<%=contribution._id%>/edit">Edit</a>
+                                <form class="delete-form" action="/grandplans/<%=grandplan._id%>/contribution/<%=contribution._id%>?_method=DELETE" method="POST">
+                                    <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                                </form>
+                        <% } %>
+                    </div>
+                <% }) %>
+                
+            </div>
+            <div class="text-right">
+                <a class="btn btn-adding" href="/grandplans/<%=grandplan._id%>/contribution/new">Contribute To This GrandPlan</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="thumbnail">
+                <img class="img-responsive" src="<%=grandplan.image%>">
+                <div class="caption-full">
+                    <h4><a href=""><%=grandplan.name%></a></h4>
+                    <p><i>" <%=grandplan.description%> "</i></p>
+                    <hr>
+                    <p>
+                        <em>Idea submitted by 
+                            <a href="/users/<%=grandplan.author.id%>"><%=grandplan.author.username%></a>,
+                             <%= grandplan.createdAt %>
+                        </em>
+                    </p>
+                    <% if(currentUser && grandplan.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
+                        <a class="btn btn-warning" href="/grandplans/<%= grandplan.id %>/edit">Edit</a>
+                        <form class="delete-form" action="/grandplans/<%= grandplan.id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
+            <div class="well comment-section">
+                <div class="text-right">
+                    <a class="btn btn-adding" href="/grandplans/<%=grandplan._id%>/comments/new">Add New Comment</a>
+                </div>
+                <hr>
+                <!--showing the comments-->
+                <% grandplan.comments.forEach(function(comment){ %>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong><%= comment.author.username %></strong>
+                            <span class="pull-right"><%= moment().startOf('hour').fromNow() %></span>
+                            <p>
+                                <%= comment.text %>
+                            </p>
+                            <% if(currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
+                                <a class="btn btn-xs btn-warning" href="/grandplans/<%=grandplan._id%>/comments/<%=comment._id%>/edit">Edit</a>
+                                <form class="delete-form" action="/grandplans/<%=grandplan._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                                    <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                                </form>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<% include ../partials/footer %>

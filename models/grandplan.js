@@ -3,10 +3,12 @@ var moment = require("moment");
 var currentDate = moment();
 currentDate.format("YYYY-MM-DD");
 
-// mongoose schema-setup
-var campgroundSchema = new mongoose.Schema({
+// GRANDPLAN
+//mongoose schema setup
+var grandplanSchema = new mongoose.Schema({
     name: String,
-    price: String, //this could be change d for e.g. the owner of the idea
+    reqContr: String, //number of required contributors, or more like a list of users, which is then converted to an amount when needed
+    actContr: String, //number of actual contributors now present, or more like a list of users, which is then converted to an amount when needed
     image: String,
     description: String,
     createdAt: {type: Date, default: currentDate },
@@ -31,4 +33,5 @@ var campgroundSchema = new mongoose.Schema({
     ]
 });
 
-module.exports = mongoose.model("Campground", campgroundSchema);
+
+module.exports = mongoose.model("Grandplan", grandplanSchema);

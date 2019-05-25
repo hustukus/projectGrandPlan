@@ -1,0 +1,56 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <header class="jumbotron text-center">
+                <div class="container">
+                    <h1>Welcome to MyPage</h1>
+                </div>
+            </header>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <h1><%= user.username %></h1>
+            <div class="thumbnail">
+                <img src="<%= user.profilePic %>" alt="user profile image"> 
+                <div class="caption">Go ahead and contact me: <a href="mailto:<%= user.email %>"><%= user.email %> </a></div>
+            </div>
+            <span class="lead">Something about me</span>
+            <p class="well user-desc"><i>" <%= user.userDescription %> "</i></p>
+        </div>
+        
+        <!--GPs the user has started-->
+        <div class="col-md-5">
+            <h2 class="text-center"><%= user.username %>'s GrandPlans</h2>
+            <ol style="padding-left: 0;">
+                <% user.createdGrandplans.forEach(function(createdGrandplan){ %>
+                <div class="thumbnail">
+                    <h4 class="lead text-center"><a href="../grandplans/<%=createdGrandplan._id%>"><%= createdGrandplan.name %></a></h4>
+                    <img class="img-responsive userProfImg" src="<%=createdGrandplan.image%>">
+                    <p class="description-text">
+                        <%= createdGrandplan.description %>
+                    </p>
+                </div>
+                <% }) %>
+            </ol>
+        </div>
+        
+        <!--GPs user is contributing to-->
+        <div class="col-md-5">
+            <h2 class="text-center"><%= user.username %>'s Contributions</h2>
+            <ol style="padding-left: 0;">
+                <!--showing the current contributions-->
+                <% user.contributedGrandplans.forEach(function(contributedGrandplan){ %>
+                <div class="thumbnail">
+                    <h4 class="lead text-center"><a href="../grandplans/<%=contributedGrandplan._id%>"><%= contributedGrandplan.name %></a></h4>
+                    <img class="img-responsive userProfImg" src="<%=contributedGrandplan.image%>">
+                </div>
+                <% }) %>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>

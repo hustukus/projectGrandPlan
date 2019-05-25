@@ -2,14 +2,11 @@
 
 <div class="container">
     <div class="row">
-        <h1 style="text-align: center;">Create a new campground</h1>
+        <h1 style="text-align: center;">Create a new GrandPlan</h1>
         <div style=" width: 30%; margin: 35px auto;">
-            <form action="/campgrounds" method="POST">
+            <form action="/grandplans" method="POST">
                 <div class="form-group">
                     <input class="form-control" type="text" name="name" placeholder="name">
-                </div>
-                <div class="form-group">
-                    <input class="form-control" type="number" name="price" placeholder="price" min="0.01" step="0.01">
                 </div>
                 <div class="form-group">
                     <input class="form-control" type="text" name="image" placeholder="image url">
@@ -21,7 +18,7 @@
                     <button class="btn btn-lg btn-primary btn-block">Submit!</button>
                 </div>
             </form>
-            <a href="/campgrounds">Go Back</a>
+            <a href="/grandplans">Go Back</a>
         </div>
     </div>
 </div>

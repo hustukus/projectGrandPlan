@@ -3,35 +3,17 @@ var router = express.Router();
 var Grandplan = require("../models/grandplan");
 var middleware = require("../middleware"); // when something is named index.js, it is automatically required (in this case) when the directory it's in is required
 
-// // INDEX - show all Grandplans
+// // INDEX - show all grandplans
 // router.get("/", function(req, res){
-//     //search functionality
-//     var noMatch = null;
-//     if(req.query.search){
-//         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-//         // Get all Grandplans from DB
-//         Grandplan.find({name: regex}, function(err, allGrandplans){
-//           if(err){
-//               console.log(err);
-//           } else {
-//               if(allGrandplans.length < 1) {
-//                   noMatch = "No Grandplans match that query, please try again!";
-//               }
-//               res.render("Grandplans/index",{Grandplans:allGrandplans, noMatch: noMatch});
-//           }
-//         });
-//     }else{
-//         //Get all Grandplans from DB, "normal" functionality
-//         Grandplan.find({}, function(err, allGrandplans){
-//             if(err){
-//                 console.log(err);
-//             }else{
-//                 res.render("Grandplans/index", {Grandplans: allGrandplans, noMatch: noMatch, page: "Grandplans"});
-//             }
-//         });
-//     }
+//     //Get all grandplans from DB
+//     GrandPlan.find({}, function(err, allGrandplans){
+//         if(err){
+//             console.log(err);
+//         }else{
+//             res.render("grandplans/index", {grandplans: allGrandplans});
+//         }
+//     });
 // });
-
 
 //INDEX - show all Grandplans
 router.get("/", function(req, res){
@@ -82,37 +64,38 @@ router.get("/", function(req, res){
     }
 });
 
-
-//CREATE - create a new Grandplan to database
+//CREATE - create a new grandplan to database
 router.post("/", middleware.isLoggedIn, function(req, res){
-   // get data from the form and add to Grandplans array
+   // get data from the form and add to grandplans array
    var name = req.body.name ;
+   var reqContr = req.body.reqContr;
+   var actContr = req.body.actContr;
    var image = req.body.image;
    var desc = req.body.description;
    var author = {
        id: req.user._id,
        username: req.user.username
    };
-   var newGrandplan = {name: name, image: image, description: desc, author: author};
-   // create new capmground and save it to DB
+   var newGrandplan = {name: name, reqContr: reqContr, actContr: actContr, image: image, description: desc, author: author};
+   // create new grandplan and save it to DB
    Grandplan.create(newGrandplan, function(err, newlyCreated){
        if(err){
            console.log(err);
        }else{
-           //save the link from new Grandplan to user
-           console.log("before pushing " + req.user);
-           req.user.createdGrandplans.push(newlyCreated);
-           console.log("after pushing " + req.user);
-           console.log("after pushing " + req.user.createdGrandplans);
-           req.user.save();
-            // redirect back to Grandplans page
+            //save the link from new Grandplan to user
+            console.log("before pushing " + req.user);
+            req.user.createdGrandplans.push(newlyCreated);
+            console.log("after pushing " + req.user);
+            console.log("after pushing " + req.user.createdGrandplans);
+            req.user.save();
+            // redirect back to grandplans page
             console.log(newlyCreated);
             res.redirect("grandplans");
        }
    });
 });
 
-//NEW - show form to create new Grandplan
+//NEW - show form to create new grandplan
 router.get("/new", middleware.isLoggedIn, function(req, res){
    res.render("grandplans/new");
 });
@@ -132,14 +115,14 @@ router.get("/:id", function(req, res){
     });
 });
 
-//EDIT Grandplan route
+//EDIT - edit the selected grandplan
 router.get("/:id/edit", middleware.checkGrandplanOwnership, function(req, res) {
         Grandplan.findById(req.params.id, function(err, foundGrandplan){
             res.render("grandplans/edit", {grandplan: foundGrandplan});
         });
 });
 
-//UPDATE Grandplan route
+//UPDATE - update the selected grandplan
 router.put("/:id", middleware.checkGrandplanOwnership ,function(req, res){
    //find and update the correct grandplan
    Grandplan.findByIdAndUpdate(req.params.id, req.body.grandplan, function(err, updatedGrandplan){
@@ -152,7 +135,7 @@ router.put("/:id", middleware.checkGrandplanOwnership ,function(req, res){
    });
 });
 
-//DESTROY Grandplan route
+//DESTROY - delete the selected grandplan
 router.delete("/:id", middleware.checkGrandplanOwnership ,function(req, res){
     Grandplan.findByIdAndRemove(req.params.id, function(err){
         if(err){

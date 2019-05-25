@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router({mergeParams: true});
-var Campground = require("../models/campground");
+var Grandplan = require("../models/grandplan");
 var Comment = require("../models/comment");
 var middleware = require("../middleware"); // when something is named index.js, it is automatically required (in this case) when the directory it's in is required
 
@@ -11,12 +11,12 @@ var middleware = require("../middleware"); // when something is named index.js, 
 
 //Comments NEW route
 router.get("/new", middleware.isLoggedIn, function(req, res) {
-    // find campground by id
-    Campground.findById(req.params.id, function(err, campground){
+    // find grandplan by id
+    Grandplan.findById(req.params.id, function(err, grandplan){
         if(err){
             console.log(err);
         }else{
-            res.render("comments/new", {campground: campground});
+            res.render("comments/new", {grandplan: grandplan});
         }
     });
     
@@ -24,12 +24,14 @@ router.get("/new", middleware.isLoggedIn, function(req, res) {
 
 //Comments CREATE route
 router.post("/", middleware.isLoggedIn, function(req, res){
-    //lookup campground usinf ID
-    Campground.findById(req.params.id, function(err, campground) {
+    //lookup grandplan using ID
+    Grandplan.findById(req.params.id, function(err, grandplan) {
         if(err){
             console.log(err);
         }else{
+            console.log(req.body.comment);
             Comment.create(req.body.comment, function(err, comment){
+                console.log(comment);
                 if(err){
                     req.flash("error", "Something went wrong with the database (most likely)");
                     console.log(err);
@@ -39,11 +41,12 @@ router.post("/", middleware.isLoggedIn, function(req, res){
                     comment.author.username = req.user.username;
                     //save comment
                     comment.save();
-                    campground.comments.push(comment);
-                    campground.save();
-                    //console.log(comment);
+                    grandplan.comments.push(comment);
+                    grandplan.save();
+                    console.log(comment);
+                    console.log(grandplan.comments);
                     req.flash("success", "Successfully created a comment!");
-                    res.redirect("/campgrounds/" + campground._id);
+                    res.redirect("/grandplans/" + grandplan._id);
                 }
             });
         }
@@ -52,12 +55,18 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 
 //Comments EDIT route
 router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req, res){
-    Comment.findById(req.params.comment_id, function(err, foundComment){
-        if(err){
-            console.log(err);
-        }else{
-            res.render("comments/edit", {campground_id: req.params.id, comment: foundComment});
+    Grandplan.findById(req.params.id, function(err, foundGrandplan){
+        if(err || !foundGrandplan){
+            req.flash("error", "No grandplan found");
+            return res.redirect("/grandplans");
         }
+        Comment.findById(req.params.comment_id, function(err, foundComment){
+            if(err){
+                console.log(err);
+            }else{
+                res.render("comments/edit", {grandplan_id: req.params.id, comment: foundComment});
+            }
+        });
     });
 });
 
@@ -67,7 +76,7 @@ router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res){
         if(err){
             res.redirect("back");
         }else{
-            res.redirect("/campgrounds/" + req.params.id);
+            res.redirect("/grandplans/" + req.params.id);
         }
     });
 });
@@ -79,7 +88,7 @@ router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, re
             res.redirect("back");
         }else{
             req.flash("success", "Successfully deleted comment!");
-            res.redirect("/campgrounds/" + req.params.id);
+            res.redirect("/grandplans/" + req.params.id);
         }
     });
 });

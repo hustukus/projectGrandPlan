@@ -2,21 +2,23 @@ var express = require("express");
 var app = express();
 var bodyparser = require("body-parser");
 var mongoose = require("mongoose");
-// var Campground = require("./models/campground");
-var seedDB = require("./seeds");
-// var Comment = require("./models/comment");
+// var seedDB = require("./seeds");
 var passport  = require("passport");
 var LocalStrategy = require("passport-local");
 var User = require("./models/user");
 var methodOverride = require("method-override");
 var flash = require("connect-flash");
+var moment = require("moment");
+moment().format();
 
 // requiring routes
 var commentRoutes = require("./routes/comments"),
-    campgroundRoutes = require("./routes/campgrounds"),
-    indexRoutes = require("./routes/index");
+    grandplanRoutes = require("./routes/grandplans"),
+    indexRoutes = require("./routes/index"),
+    userRoutes = require("./routes/users"),
+    contributionRoutes = require("./routes/contribution");
 
-//mongoose.connect('mongodb://localhost:27017/yelp_camp', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/grand_plans', { useNewUrlParser: true });
 
 //connecting to the db through mongo db atlas
 // const MongoClient = require('mongodb').MongoClient;
@@ -38,6 +40,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.use(flash());
+app.locals.moment = require("moment");
 // seed the database
 // seedDB();
 
@@ -64,9 +67,11 @@ app.use(function(req, res, next){
 
 // requires routes to views
 app.use(indexRoutes);
-app.use("/campgrounds", campgroundRoutes);
-app.use("/campgrounds/:id/comments", commentRoutes);
+app.use("/grandplans", grandplanRoutes);
+app.use("/grandplans/:id/comments", commentRoutes);
+app.use(userRoutes);
+app.use("/grandplans/:id/contribution", contributionRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function(){
-   console.log("yelpcamp starting!") ;
+   console.log("grandplans starting!") ;
 });

@@ -1,21 +1,22 @@
-var Campground = require("../models/campground");
+var Grandplan = require("../models/grandplan");
 var Comment = require("../models/comment");
+var Contribution = require("../models/contribution");
 //all middlewares go here
 var middlewareObj = {};
 
-middlewareObj.checkCampgroundOwnership = function (req, res, next){
+middlewareObj.checkGrandplanOwnership = function (req, res, next){
     if(req.isAuthenticated()){
-        Campground.findById(req.params.id, function(err, foundCampground){
-            if(err){
-                req.flash("error", "Campground not found");
-                res.redirect("back");
+        Grandplan.findById(req.params.id, function(err, foundGrandplan){
+            if(err || !foundGrandplan){
+                req.flash("error", "Grandplan not found");
+                res.redirect("/grandplans");
             }else{
-                //does user own the capmground
-                if(foundCampground.author.id.equals(req.user._id)){
+                //does user own the grandplan or is admin
+                if(foundGrandplan.author.id.equals(req.user._id) || req.user.isAdmin){
                     next();
                 }else{
                     req.flash("error", "You don't have premission to do that :(");
-                    res.redirect("back");
+                    res.redirect("/grandplans");
                 }
             }
         });
@@ -28,12 +29,36 @@ middlewareObj.checkCampgroundOwnership = function (req, res, next){
 middlewareObj.checkCommentOwnership = function (req, res, next){
     if(req.isAuthenticated()){
         Comment.findById(req.params.comment_id, function(err, foundComment){
-            if(err){
+            if(err || !foundComment){
                 console.log(err);
-                res.redirect("back");
+                req.flash("error", "Comment not found");
+                res.redirect("/grandplans");
             }else{
                 //does user own the comment
-                if(foundComment.author.id.equals(req.user._id)){
+                if(foundComment.author.id.equals(req.user._id) || req.user.isAdmin){
+                    next();
+                }else{
+                    req.flash("error", "You don't have the permission to do that");
+                    res.redirect("back");
+                }
+            }
+        });
+    }else{
+        req.flash("error", "You need to be logged in to do that");
+        res.redirect("back");
+    }
+};
+
+middlewareObj.checkContributionOwnership = function (req, res, next){
+    if(req.isAuthenticated()){
+        Contribution.findById(req.params.contribution_id, function(err, foundContribution){
+            if(err || !foundContribution){
+                console.log(err);
+                req.flash("error", "Contribution not found");
+                res.redirect("/grandplans");
+            }else{
+                //does user own the contribution
+                if(foundContribution.author.id.equals(req.user._id) || req.user.isAdmin){
                     next();
                 }else{
                     req.flash("error", "You don't have the permission to do that");
@@ -51,8 +76,8 @@ middlewareObj.isLoggedIn = function (req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
-    req.flash("error", "You need to logged in to do that");
-    res.redirect("/login");
+    req.flash("error", "You need to Sign Up or Log in to do that");
+    res.redirect("/users/new");
 };
 
 

@@ -1,5 +1,6 @@
 .thumbnail img {
     width: 100%;
+    border-radius: 4px;
 }
 .thumbnail {
     padding: 0;
@@ -9,4 +10,102 @@
 }
 .delete-form {
     display: inline;
+}
+.form-inline .search-field {
+    width: 25rem;
+    display: inline-block;
+}
+.mainview {
+    margin: 15px;
+}
+.imageThumbnail{
+    margin: 15px 0;
+}
+.contributionThumbnail {
+    border: none;
+}
+hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+.roleOfUser{
+    padding-left: 20px;
+    list-style: none;
+}
+.textCapit {
+    text-transform: capitalize;
+}
+.userProfImg {
+    size: auto;
+}
+a {
+    color:black;
+}
+/*colorschema 1: #5680E9, #84CEEB, #5AB9EA, #C1C8E4, #8860D0*/
+/*colorschema 2: #fbe8a6 #f4976c #303c6c #b4dfe5 #d2fdff*/
+
+
+
+
+/*MAIN COLOR SCHEMA, colorschema 2*/
+body {
+    background-color: #fbe8a6;
+    font-family: "Comfortaa";
+}
+.navbar{
+    background-color: #f4976c;
+    border: none;
+    border-radius: 0;
+    font-family: "Comfortaa";
+    font-weight: 700;
+}
+.jumbotron {
+    background-color: #fbe8a6;
+    /*background: url("https://source.unsplash.com/ETRPjvb0KM0");*/
+    background-size: cover;
+}
+.thumbnail {
+    background-color: #b4dfe5;
+}
+.thumbnail.contributionThumbnail{
+    background-color: transparent;
+}
+.comment-section{
+    background-color: #f4976c;
+}
+.panel-contributions{
+    background-color: rgb(180,223,229);
+}
+.panel-contributions.panel-heading{
+    background-color: #b4dfe5;
+}
+.btn-primary {
+    background-color: #303c6c;
+    border: none;
+}
+.btn-adding {
+    color: black;
+    background-color: transparent;
+    border-color: #303c6c;
+}
+.btn-adding:hover {
+    background-color: #303c6c;
+    border-color: #303c6c;
+    color: white;
+}
+.btn-adding:active, .btn-adding:focus{
+    background-color: rgb(48,60,108);
+    background-color: rgba(48,60,108, 0.20);
+    border-color: rgb(48,60,108);
+    color: white;
+}
+.page-header{
+    border: none;
+}
+.user-desc{
+    background-color: #f4976c;
+}
+.description-text {
+    padding: 10px;
 }
