@@ -39,7 +39,6 @@ body {
   animation: imageAnimation 50s linear infinite; 
 }
 
-/*following pictures cpould be shanged to unsplash*/
 .slideshow li:nth-child(1) { 
   background-image: url(https://source.unsplash.com/bIx15C7AnNg) 
 }

@@ -3,18 +3,6 @@ var router = express.Router();
 var Grandplan = require("../models/grandplan");
 var middleware = require("../middleware"); // when something is named index.js, it is automatically required (in this case) when the directory it's in is required
 
-// // INDEX - show all grandplans
-// router.get("/", function(req, res){
-//     //Get all grandplans from DB
-//     GrandPlan.find({}, function(err, allGrandplans){
-//         if(err){
-//             console.log(err);
-//         }else{
-//             res.render("grandplans/index", {grandplans: allGrandplans});
-//         }
-//     });
-// });
-
 //INDEX - show all Grandplans
 router.get("/", function(req, res){
     // needed for pagination feature

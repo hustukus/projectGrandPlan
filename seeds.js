@@ -1,3 +1,5 @@
+// THIS FILE IS NOT CURRENTLY IN USE - IT'S USED TO POPULATE SOME DUMMY PREDATA TO THE DATABASE, BUT THE DATA MODEL ISN'T SAME ANYMORE THAT IT USED TO BE
+
 var mongoose = require("mongoose");
 var Campground = require("./models/campground");
 var Comment   = require("./models/comment");
